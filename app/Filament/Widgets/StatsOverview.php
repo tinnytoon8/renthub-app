@@ -11,6 +11,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends StatsOverviewWidget
 {
+    // protected static ?int $sort = 1;
+
     protected function getStats(): array
     {
         // menghitung kamar yang tersedia
@@ -43,6 +45,12 @@ class StatsOverview extends StatsOverviewWidget
                 ->description('Total kuitansi lunas')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('info'),
+
+            // menampilkan data dari total pemasukan tiap bulan
+            Stat::make('Pengeluaran Bulan Ini', 'Rp' . number_format($pengeluaranBulanIni, 0, ',', '.'))
+                ->description('Total biaya operasional')
+                ->descriptionIcon('heroicon-m-arrow-trending-down')
+                ->color('danger'),
             
             // menampilkan data total keuntungan bersih
             Stat::make('Keuntungan Bersih', 'Rp' . number_format($keuntunganBersih, 0, ',', '.'))

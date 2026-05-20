@@ -38,6 +38,29 @@ class Lease extends Model
                 $lease->room->update(['status' => 'occupied']);
             }
         });
+
+        // mengubah status kontrakan bergantung dari penyewa pindah kontrakan
+        static::updating(function ($lease) {
+            if ($lease->isDirty('room_id')) {
+                $oldRoomId = $lease->getOriginal('room_id');
+                $newRoomId = $lease->room_id;
+
+                \App\Models\Room::find($oldRoomId)->update(['status' => 'available']);
+                \App\Models\Room::find($newRoomId)->update(['status' => 'available']);
+            }
+
+            if($lease->isDirty('status') && $lease->status === 'closed') {
+                $lease->room->update(['status' => 'available']);
+            }
+        });
+
+        // mengubah status kontrakan bergantung dari data penyewa yang dihapus dari tabel
+        static::deleting(function ($lease) {
+            if ($lease->room_id) {
+                \App\Models\Room::where('id', $lease->room_id)
+                    ->update(['status' => 'available']);
+            }
+        });
     }
 
     public function payments()

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Override;
 
 class Room extends Model
 {
@@ -13,5 +14,14 @@ class Room extends Model
     {
         // Satu kamar bisa punya banyak kontrak sewa
         return $this->hasMany(Lease::class);
+    }
+
+    protected static function booted()
+    {
+        static::deleted(function ($room) {
+            if ($room->photo) {
+                \Illuminate\Support\Facades\Storage::disk('local')->delete($room->photo);
+            }
+        });
     }
 }

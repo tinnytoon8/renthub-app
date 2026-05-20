@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Override;
 
 class RoomResource extends Resource
 {
@@ -28,6 +29,18 @@ class RoomResource extends Resource
     public static function table(Table $table): Table
     {
         return RoomsTable::configure($table);
+    }
+
+    #[Override]
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 'available')->count();
+    }
+
+    #[Override]
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'success';
     }
 
     public static function getRelations(): array

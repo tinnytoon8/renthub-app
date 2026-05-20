@@ -2,11 +2,15 @@
 
 namespace App\Filament\Resources\Payments\Tables;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class PaymentsTable
@@ -29,7 +33,7 @@ class PaymentsTable
                     ->sortable()
                     ->label('Jumlah Bayar'),
                 TextColumn::make('payment_date')
-                    ->money('d M Y')
+                    ->date('d M Y')
                     ->sortable()
                     ->label('Tanggal Bayar'),
                 TextColumn::make('payment_method')
@@ -49,10 +53,26 @@ class PaymentsTable
                     ->label('Status'),          
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options([
+                        'paid' => 'Lunas',
+                        'pending' => 'Belum Lunas',
+                    ])
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
+                Action::make('pdf')
+                    ->label('Cetak')
+                    ->color('success')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(fn ($record) => response()->streamDownload(
+                        function () use ($record) {
+                            $pdf = Pdf::loadView('pdf.Kuitansi', ['payment' => $record]);
+                            echo $pdf->stream();
+                        },
+                        "Kuitansi-{$record->invoice_number}.pdf"
+                    ))
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
