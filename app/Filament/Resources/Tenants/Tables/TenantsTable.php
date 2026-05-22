@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tenants\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -32,6 +33,12 @@ class TenantsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('chat')
+                    ->label('Hubungi')
+                    ->icon('heroicon-o-chat-bubble-left-right')
+                    ->color('success')
+                    ->url(fn ($record) => "https://wa.me/{$record->phone}?text=Halo%20{$record->name},%20ini%20dari%20manajemen%20RentHub...")
+                    ->openUrlInNewTab(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

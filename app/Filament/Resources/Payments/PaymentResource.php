@@ -23,7 +23,7 @@ class PaymentResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return PaymentForm::configure($schema);
-    }
+}
 
     public static function table(Table $table): Table
     {
@@ -33,7 +33,7 @@ class PaymentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+           //
         ];
     }
 

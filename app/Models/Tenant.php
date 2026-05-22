@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Lease;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Tenant extends Model
 {
+    use LogsActivity;
+    
     // field yang diizinkan untuk diisi ke form/request
     protected $fillable = ['tenant_number', 'name', 'no_identity', 'phone', 'emergency_phone', 'photo_identity'];
 
@@ -30,10 +35,18 @@ class Tenant extends Model
             }
         });
 
+        // menghapus foto identitas secara otomatis di storage jika data penyewa dihapus
         static::deleted(function ($tenant) {
             if ($tenant->photo_identity) {
                 \Illuminate\Support\Facades\Storage::disk('local')->delete($tenant->photo_identity);
             }
         });
+    }
+
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'phone'])
+            ->logOnlyDirty();
     }
 }

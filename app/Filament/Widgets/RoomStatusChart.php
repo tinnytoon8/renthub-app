@@ -9,7 +9,11 @@ class RoomStatusChart extends ChartWidget
 {
     protected static ?int $sort = 2;
     
+    protected ?string $maxHeight = '300px';
+
     protected ?string $heading = 'Komposisi Status Chart';
+
+    protected int | string | array $columnSpan = 1;
 
     protected function getData(): array
     {
@@ -38,4 +42,18 @@ class RoomStatusChart extends ChartWidget
     {
         return 'doughnut';
     }
+
+    protected function getOptions(): array
+    {
+        return [
+            'plugins' => [
+                'legend' => [
+                    'display' => true,
+                    'position' => 'bottom',
+                ],
+            ],
+            'cutout' => '70%',
+        ];
+    }
+    
 }

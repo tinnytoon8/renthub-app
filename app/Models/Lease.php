@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Room;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 
 class Lease extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     // field yang diizinkan untuk diisi ke form/request
     protected $fillable = ['room_id', 'tenant_id', 'start_date', 'end_date', 'deposit_amount', 'status'];
 
@@ -67,5 +71,13 @@ class Lease extends Model
     {
         // satu kontrakan bisa punya banyak pembayaran
         return $this->hasMany(Payment::class);
+    }
+
+    
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['room_id', 'tenant_id', 'start_date', 'end_date', 'status'])
+            ->logOnlyDirty();
     }
 }

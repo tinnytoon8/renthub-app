@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Payment extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = ['lease_id', 'invoice_number', 'amount_paid', 'payment_date', 'payment_method', 'status', 'proof_of_payment', 'notes'];
 
@@ -36,5 +38,12 @@ class Payment extends Model
 
             $payment->invoice_number = "INV-{$today}-{$nextNumber}";
         });
+    }
+
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['amount_paid', 'payment_date', 'status'])
+            ->logOnlyDirty();
     }
 }

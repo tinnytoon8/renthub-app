@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Leases\Pages;
 
 use App\Filament\Resources\Leases\LeaseResource;
 use Filament\Actions\CreateAction;
+use Filament\Actions\ExportAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListLeases extends ListRecords

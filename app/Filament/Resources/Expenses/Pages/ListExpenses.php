@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Expenses\Pages;
 
+use App\Filament\Exports\ExpenseExporter;
 use App\Filament\Resources\Expenses\ExpenseResource;
 use Filament\Actions\CreateAction;
+use Filament\Actions\ExportAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListExpenses extends ListRecords
@@ -13,6 +15,8 @@ class ListExpenses extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            ExportAction::make()
+                ->exporter(ExpenseExporter::class),
             CreateAction::make(),
         ];
     }
