@@ -1,0 +1,28 @@
+{
+    "name": "RentHub",
+    "short_name": "RentHub",
+    "description": "Rental House Management System",
+    "id": "/admin",
+    "start_url": "/admin",
+    "scope": "/admin",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#0f172a",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/icons/house-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/house-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "display-override": [
+        "window-controls-overlay",
+        "standalone"
+    ]
+}

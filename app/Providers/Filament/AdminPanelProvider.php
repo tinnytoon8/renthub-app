@@ -19,6 +19,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\HtmlString;
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -60,6 +63,25 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn () => new HtmlString('
+                    <link rel="manifest" href="/manifest.webmanifest">
+                    <meta name="theme-color" content="#0f172a">
+                    <meta name="mobile-web-app-capable" content="yes">
+                    <meta name="apple-mobile-web-app-capable" content="yes">
+                ')
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn () => new HtmlString("
+                    <script>
+                        if ('serviceWorker' in navigator) {
+                            navigator.serviceWorker.register('/sw.js');
+                        }
+                    </script>
+                ")
+            );
     }
 }
