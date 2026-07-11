@@ -51,13 +51,13 @@ RentHub supports Progressive Web App (PWA) features:
 Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/renthub.git
+git clone https://github.com/tinnytoon8/renthub-app.git
 ```
 
 Go to project folder
 
 ```bash
-cd renthub
+cd renthub-app
 ```
 
 Install dependencies
